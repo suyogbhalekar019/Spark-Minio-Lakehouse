@@ -17,8 +17,8 @@ spec:
         - name: registry-secret
       containers:
         - name: spark-notebook
-          #image: sk97/spark-notebook-custom:latest
-          image: my-registry:30222/spark-notebook-image:v1
+          image: sk97/spark-notebook-custom:latest
+          #image: my-registry:30222/spark-notebook-image:v1
           ports:
           - containerPort: 8888
           - containerPort: 4040
@@ -42,6 +42,24 @@ spec:
             subPath: spark-defaults.conf
         # - name: conda-env
         #   mountPath: /opt/conda/env
+          readinessProbe:
+          httpGet:
+            path: /
+            port: 8888
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8888
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
       volumes:
         - name: notebooks
           persistentVolumeClaim:
