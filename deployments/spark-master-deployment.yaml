@@ -17,7 +17,7 @@ spec:
       containers:
       - name: spark-master
         #image: sk97/spark-master-custom:latest
-         image: suyogbhalekar19/spark-master-custom:V1
+        image: suyogbhalekar19/spark-master-custom:V1
         env:
         - name: SPARK_MODE
           value: "master"
