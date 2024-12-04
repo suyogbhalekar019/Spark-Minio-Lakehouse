@@ -17,7 +17,8 @@ spec:
         - name: registry-secret
       containers:
         - name: spark-notebook
-          image: sk97/spark-notebook-custom:latest
+          image: suyogbhalekar19/spark-notebook-custom:V1
+          #image: sk97/spark-notebook-custom:latest
           #image: my-registry:30222/spark-notebook-image:v1
           ports:
           - containerPort: 8888
