@@ -21,23 +21,47 @@ spec:
             - /data
             - --console-address
             - :9001
+            #- --certs-dir
+            #- /etc/ssl/certs
           ports:
             - containerPort: 9000
             - containerPort: 9001
           env:
             - name: MINIO_ROOT_USER
-              value: minio
+              #value: minio
+              valueFrom:
+                secretKeyRef:
+                  name: minio-root
+                  key: ROOT_USERNAME
             - name: MINIO_ROOT_PASSWORD
-              value: minio123
+              #value: minio123
+              valueFrom:
+                secretKeyRef:
+                  name: minio-root
+                  key: ROOT_PASSWORD
             - name: MINIO_ACCESS_KEY
-              value: minio
+              #value: minio
+              valueFrom:
+                secretKeyRef:
+                  name: minio-access-key
+                  key: ACCESS_KEY
             - name: MINIO_SECRET_KEY
-              value: minio123
+              #value: minio123
+              valueFrom:
+                secretKeyRef:
+                  name: minio-access-key
+                  key: SECRET_KEY
           volumeMounts:
           - name: minio-data
             mountPath: /data
             readOnly: false
+          - name: tls-certs
+            mountPath: /etc/ssl/certs
+            readOnly: true
       volumes:
         - name: minio-data
           persistentVolumeClaim:
             claimName: minio-pvc
+        - name: tls-certs
+          secret:
+            secretName: lakehouse-tls
