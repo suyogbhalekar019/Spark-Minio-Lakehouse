@@ -13,9 +13,12 @@ spec:
       labels:
         app: spark-notebook
     spec:
+      imagePullSecrets:
+        - name: registry-secret
       containers:
         - name: spark-notebook
-          image: sk97/spark-notebook-custom:latest  
+          #image: sk97/spark-notebook-custom:latest
+          image: my-registry:30222/spark-notebook-image:v1
           ports:
           - containerPort: 8888
           - containerPort: 4040
@@ -25,7 +28,11 @@ spec:
           - name: GRANT_SUDO
             value: "yes"
           - name: JUPYTER_TOKEN
-            value: "123"
+            #value: "123"
+            valueFrom:
+              configMapKeyRef:
+                name: jupiter
+                key: JUPYTER_TOKEN
           volumeMounts:
           - name: notebooks
             mountPath: /home/jovyan/work
