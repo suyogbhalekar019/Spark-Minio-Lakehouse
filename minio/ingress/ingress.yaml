@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-spark
+  namespace: lakehouse
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - lakehouse.loylty.com
+    - lakehouse1.loylty.com
+    - lakehouse2.loylty.com
+    secretName: kubecert-spark
+  rules:
+  - host: lakehouse.loylty.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: minio
+            port:
+              number: 9001
+  - host: lakehouse1.loylty.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: spark-master
+            port:
+              number: 8080
+  - host: lakehouse2.loylty.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: spark-notebook
+            port:
+              number: 8888
