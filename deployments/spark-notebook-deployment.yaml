@@ -14,22 +14,22 @@ spec:
         app: spark-notebook
     spec:
       imagePullSecrets:
-        - name: registry-secret
+        - name: docker-secret
       containers:
         - name: spark-notebook
-          image: suyogbhalekar19/spark-notebook-custom:V1
-          #image: sk97/spark-notebook-custom:latest
-          #image: my-registry:30222/spark-notebook-image:v1
+          image: my-registry:30222/notebook-custom:v1
+            #image: suyogbhalekar19/spark-notebook-custom-2:V1
           ports:
           - containerPort: 8888
           - containerPort: 4040
           env:
+          - name: TZ
+            value: "Asia/Kolkata"
           - name: JUPYTER_ENABLE_LAB
             value: "yes"
           - name: GRANT_SUDO
             value: "yes"
           - name: JUPYTER_TOKEN
-            #value: "123"
             valueFrom:
               configMapKeyRef:
                 name: jupiter
@@ -41,26 +41,32 @@ spec:
           - name: spark-defaults
             mountPath: /usr/local/spark/conf/spark-defaults.conf
             subPath: spark-defaults.conf
-        # - name: conda-env
-        #   mountPath: /opt/conda/env
           readinessProbe:
-          httpGet:
-            path: /
-            port: 8888
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 2
-          successThreshold: 1
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8888
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 2
-          successThreshold: 1
-          failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8888
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8888
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:100 /home"]
+            #command: ["sh", "-c", "chmod -R 777 /home"]
+          volumeMounts:
+          - name: notebooks
+            mountPath: /home/jovyan/work
       volumes:
         - name: notebooks
           persistentVolumeClaim:
