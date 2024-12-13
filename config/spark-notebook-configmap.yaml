@@ -4,6 +4,7 @@ metadata:
   name: spark-notebook-config
   namespace: lakehouse
 data:
+  #spark-defaults.conf: "/Minio/custom-images/jupyter/spark-defaults.conf"
   spark-defaults.conf: |
     spark.jars                                          /usr/local/spark/jars/delta-core_2.12-2.4.0.jar,/usr/local/spark/jars/hadoop-aws-3.3.2.jar,/usr/local/spark/jars/delta-storage-2.4.0.jar,/usr/local/spark/jars/aws-java-sdk-1.12.507.jar,/usr/local/spark/jars/s3-2.20.40.jar,/usr/local/spark/jars/aws-java-sdk-bundle-1.11.1026.jar
     spark.sql.extensions                                io.delta.sql.DeltaSparkSessionExtension
