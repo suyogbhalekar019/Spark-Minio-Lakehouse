@@ -58,24 +58,24 @@ spec:
           - name: tls-certs
             mountPath: /etc/ssl/certs
             readOnly: true
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 9001
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 2
-          successThreshold: 1
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 9001
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 2
-          successThreshold: 1
-          failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
       volumes:
         - name: minio-data
           persistentVolumeClaim:
