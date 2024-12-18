@@ -18,9 +18,17 @@ spec:
         image: minio/mc
         env:
         - name: AWS_ACCESS_KEY_ID
-          value: minio
+          #value: minio
+          valueFrom:
+            secretKeyRef:
+              name: minio-access-key
+              key: ACCESS_KEY
         - name: AWS_SECRET_ACCESS_KEY
-          value: minio123
+          #value: minio123
+          valueFrom:
+            secretKeyRef:
+              name: minio-access-key
+              key: SECRET_KEY
         - name: AWS_REGION
           value: us-east-1
         command:
