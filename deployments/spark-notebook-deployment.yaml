@@ -14,11 +14,11 @@ spec:
         app: spark-notebook
     spec:
       imagePullSecrets:
-        - name: docker-secret
+        - name: registry-secret
       containers:
         - name: spark-notebook
-          image: my-registry:30222/notebook-custom:v1
-            #image: suyogbhalekar19/spark-notebook-custom-2:V1
+          #image: my-registry:30222/spark-notebook-custom:v1
+          image: suyogbhalekar19/spark-notebook:v2
           ports:
           - containerPort: 8888
           - containerPort: 4040
